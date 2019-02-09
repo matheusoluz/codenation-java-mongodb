@@ -51,7 +51,7 @@ public class RecipeController {
 		return service.search(search);
 	}
 
-	@PostMapping(value = "{id}/like/{userId}")
+	@PostMapping(value = "/{id}/like/{userId}")
 	public void like(@PathVariable("id") String id, @PathVariable("id") String userId, BindingResult result) {
 		service.like(id, userId);
 	}
@@ -60,12 +60,14 @@ public class RecipeController {
 		service.unlike(null, null);
 	}
 
-	public RecipeComment addComment() {
-		return service.addComment(null, null);
+	@PostMapping(value = "/{id}/comment")
+	public RecipeComment addComment(@PathVariable("id") String id, @RequestBody RecipeComment comment) {
+		return service.addComment(id, comment);
 	}
 
-	public void updateComment() {
-		service.updateComment(null, null, null);
+	@PutMapping(value = "/{id}/comment/{commentId}")
+	public void updateComment(@PathVariable("id") String id, @RequestBody RecipeComment comment, @PathVariable("commentId") String commentId) {
+		service.updateComment(id, comment, commentId);
 	}
 
 	public void deleteComment() {

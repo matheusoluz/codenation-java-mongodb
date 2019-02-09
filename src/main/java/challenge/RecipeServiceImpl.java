@@ -1,5 +1,7 @@
 package challenge;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,7 +45,7 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public List<Recipe> listByIngredient(String ingredient) {
 		Sort sort = new Sort(Sort.Direction.ASC, "title");
-		return this.recipeRepository.findByIngredient(ingredient, sort);
+		return this.recipeRepository.findByIngredientsIn(Arrays.asList(ingredient), sort);
 	}
 
 	@Override
@@ -64,12 +66,19 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public RecipeComment addComment(String id, RecipeComment comment) {
-		return null;
+		Recipe recipe = this.get(id);
+		if (recipe.getComments() == null) {
+			recipe.setComments(new ArrayList<RecipeComment>());			
+		}
+		recipe.getComments().add(comment);
+		recipe = this.recipeRepository.save(recipe);
+		
+		return comment;
 	}
-
+		
 	@Override
-	public void updateComment(String id, String commentId, RecipeComment comment) {
-
+	public void updateComment(String id, RecipeComment comment, String commentId) {
+		Recipe recipe = this.get(id);	
 	}
 
 	@Override

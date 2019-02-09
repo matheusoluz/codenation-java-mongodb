@@ -1,7 +1,5 @@
 package challenge;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -13,14 +11,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 
 @Document(collection = "recipe")
-public class Recipe implements Serializable{
-	private static final long serialVersionUID = 8852975866773094054L;
+public class Recipe{
 	
-	@Id
 	private String id;
 	private String title;
 	private String description;
-	private List<String> ingredients = new ArrayList<>();
+	private List<String> ingredients;
+	private List<RecipeComment> comments;
+	private List<String> likes;
 		
 	public Recipe() {
 		
@@ -33,6 +31,8 @@ public class Recipe implements Serializable{
 		this.ingredients = ingredients;
 	}
 
+	
+	@Id
 	public String getId() {
 		return id;
 	}
@@ -63,6 +63,22 @@ public class Recipe implements Serializable{
 
 	public void setIngredients(List<String> ingredients) {
 		this.ingredients = ingredients;
+	}
+
+	public List<RecipeComment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<RecipeComment> comments) {
+		this.comments = comments;
+	}
+
+	public List<String> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<String> likes) {
+		this.likes = likes;
 	}
 
 	@Override
