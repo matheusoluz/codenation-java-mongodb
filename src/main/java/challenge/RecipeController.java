@@ -1,39 +1,59 @@
 package challenge;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/recipe")
 public class RecipeController {
 
 	@Autowired
 	private RecipeService service;
 
-	public Recipe save() {
-		return service.save(null);
+	@PostMapping
+	public Recipe save(@RequestBody Recipe recipe, BindingResult result) {
+		return service.save(recipe);
 	}
 
-	public void update() {
-		service.update(null, null);
+	@PutMapping(value = "/{id}")
+	public void update(@PathVariable("id") String id, @RequestBody Recipe recipe) {
+		service.update(id, recipe);
 	}
 
-	public void delete() {
-		service.delete(null);
+	@DeleteMapping(value = "/{id}")
+	public void delete(@PathVariable("id") String id) {
+		service.delete(id);
 	}
 
-	public Recipe get() {
-		return service.get(null);
+	@GetMapping(value = "/{id}")
+	public Recipe get(@PathVariable("id") String id) {
+		return service.get(id);
 	}
 
-	public List<Recipe> listByIngredient() {
-		return service.listByIngredient(null);
+	@GetMapping(value = "/ingredient")
+	public List<Recipe> listByIngredient(@RequestParam(value = "ingredient", defaultValue = "") String ingredient) {
+		return service.listByIngredient(ingredient);
 	}
 
-	public List<Recipe> search() {
-		return service.search(null);
+	@GetMapping(value = "/search")
+	public List<Recipe> search(@RequestParam(value = "search", defaultValue = "") String search) {
+		return service.search(search);
 	}
 
-	public void like() {
-		service.like(null, null);
+	@PostMapping(value = "{id}/like/{userId}")
+	public void like(@PathVariable("id") String id, @PathVariable("id") String userId, BindingResult result) {
+		service.like(id, userId);
 	}
 
 	public void unlike() {
