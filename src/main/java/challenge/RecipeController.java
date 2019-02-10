@@ -52,7 +52,7 @@ public class RecipeController {
 	}
 
 	@PostMapping(value = "/{id}/like/{userId}")
-	public void like(@PathVariable("id") String id, @PathVariable("id") String userId, BindingResult result) {
+	public void like(@PathVariable("id") String id, @PathVariable("userId") String userId, BindingResult result) {
 		service.like(id, userId);
 	}
 

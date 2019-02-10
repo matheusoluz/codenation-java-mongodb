@@ -79,6 +79,20 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public void updateComment(String id, RecipeComment comment, String commentId) {
 		Recipe recipe = this.get(id);	
+		List<RecipeComment>  recipeComments = recipe.getComments().
+			stream().
+			filter(rc -> rc.getId().equals(commentId)).
+			collect(Collectors.toList());
+		
+		if (recipeComments.size() > 0 && recipeComments != null) {
+			recipeComments.forEach(r -> {
+				if (r.getId().equals(commentId)) {
+					r.setComment(comment.getComment());
+				}
+			});
+			recipe = this.recipeRepository.save(recipe) ;
+		}
+		
 	}
 
 	@Override

@@ -13,8 +13,6 @@ public interface RecipeRepository extends MongoRepository<Recipe, String>{
 	List<Recipe> findByIngredientsIn(List<String> ingredient, Sort sort);
 	
 	@Query("{ $or: [{'title' : {$regex: ?0, $options: 'i'}}, {'description' : {$regex: ?0, $options: 'i'}}] }")
-	List<Recipe> SearchTitleOrDescription(String text, Sort sort);
-	
-	
+	List<Recipe> SearchTitleOrDescription(String text, Sort sort);	
 	
 }
