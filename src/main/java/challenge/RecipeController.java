@@ -52,12 +52,13 @@ public class RecipeController {
 	}
 
 	@PostMapping(value = "/{id}/like/{userId}")
-	public void like(@PathVariable("id") String id, @PathVariable("userId") String userId, BindingResult result) {
+	public void like(@PathVariable("id") String id, @PathVariable("userId") String userId) {
 		service.like(id, userId);
 	}
 
-	public void unlike() {
-		service.unlike(null, null);
+	@DeleteMapping(value = "/{id}/like/{userId}")
+	public void unlike(@PathVariable("id") String id, @PathVariable("userId") String userId) {
+		service.unlike(id, userId);
 	}
 
 	@PostMapping(value = "/{id}/comment")
@@ -70,8 +71,9 @@ public class RecipeController {
 		service.updateComment(id, comment, commentId);
 	}
 
-	public void deleteComment() {
-		service.deleteComment(null, null);
+	@DeleteMapping(value = "/{id}/comment/{commentId}")
+	public void deleteComment(@PathVariable("id") String id, @PathVariable("commentId") String commentId) {
+		service.deleteComment(id, commentId);
 	}
 
 }

@@ -25,8 +25,11 @@ public class RecipeServiceImpl implements RecipeService {
 	public void update(String id, Recipe recipe) {
 		Optional<Recipe> newObj = this.recipeRepository.findById(id);
 		if (newObj.isPresent()) {
-			atualizarDado(newObj.get(), recipe);
-			this.recipeRepository.save(newObj.get());
+			Recipe updateRecipe = newObj.get();
+			updateRecipe.setTitle(recipe.getTitle());
+			updateRecipe.setDescription(recipe.getDescription());
+			updateRecipe.setIngredients(recipe.getIngredients());
+			this.recipeRepository.save(updateRecipe);
 		}
 	}
 
@@ -56,12 +59,21 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public void like(String id, String userId) {
-
+		Recipe recipe = this.get(id);
+		if (recipe.getLikes() == null) {
+			recipe.setLikes(new ArrayList<String>());			
+		}
+		recipe.getLikes().add(userId);
+		recipe = this.recipeRepository.save(recipe);
 	}
 
 	@Override
 	public void unlike(String id, String userId) {
-
+		Recipe recipe = this.get(id);
+		if (recipe.getLikes() != null && recipe.getLikes().size() > 0) {
+			recipe.getLikes().remove(userId);			
+			recipe = this.recipeRepository.save(recipe);
+		}
 	}
 
 	@Override
@@ -85,25 +97,16 @@ public class RecipeServiceImpl implements RecipeService {
 			collect(Collectors.toList());
 		
 		if (recipeComments.size() > 0 && recipeComments != null) {
-			recipeComments.forEach(r -> {
-				if (r.getId().equals(commentId)) {
-					r.setComment(comment.getComment());
-				}
-			});
+			recipeComments.forEach(r -> r.setComment(comment.getComment()));
 			recipe = this.recipeRepository.save(recipe) ;
-		}
-		
+		}	
 	}
 
 	@Override
 	public void deleteComment(String id, String commentId) {
-
+		Recipe recipe = this.get(id);
+		recipe.getComments().removeIf(rc -> rc.getId().equals(commentId));
+		recipe = this.recipeRepository.save(recipe) ;
 	}
 	
-	public void atualizarDado(Recipe newObj, Recipe obj) {
-		newObj.setTitle(obj.getTitle());
-		newObj.setDescription(obj.getDescription());
-		newObj.setIngredients(obj.getIngredients());		
-	}
-
 }
